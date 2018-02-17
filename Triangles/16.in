@@ -1,0 +1,13 @@
+# SimplePoints
+
+# Frame around:
+6, 0 - 6, 8
+6, 8 - 0, 8
+0, 8 - 6, 0
+
+# Thirding chords:
+6, 0 - 2, 8
+6, 0 - 4, 8
+
+# Halving coord:
+6, 8 - 3, 4
