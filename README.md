@@ -9,7 +9,7 @@ Each script is named properly and takes a single input file name as parameter, o
 There are two input formats understood by this tool. Either a "Lua", or a "SimplePoints" description of the mesh. The script can auto-detect between the two formats. There are exampels of both formats in the Triangles folder.
 
 ### Lua description
-This should be a valid Lua source file that returns a table with two members: points and edges. The points whould be a dictionary of <letter> -> {x, y}, the edges should be an array of two-letter strings, each letter representing the endpoint of the edge. Here's an example:
+This should be a valid Lua source file that returns a table with two members: points and edges. The points whould be a dictionary of letter -> {x, y}, the edges should be an array of two-letter strings, each letter representing the endpoint of the edge. Here's an example:
 ```lua
 return
 {
