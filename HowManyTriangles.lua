@@ -6,6 +6,15 @@
 
 
 
+-- DEBUGGING Settings:
+local g_DrawPointCircles = false
+local g_OutputEdges = false
+local g_OutputExtEdges = false
+
+
+
+
+
 dofile("Util.lua")
 
 
@@ -68,7 +77,7 @@ local function originalShapeSvg(data)
 	local idx = 0
 
 	-- Draw circles around points:
-	if (false) then
+	if (g_DrawPointCircles) then
 		for _, pt in pairs(data.points) do
 			local coords = svgCoords(pt.coords[1], pt.coords[2])
 			idx = idx + 1
@@ -174,7 +183,7 @@ local function outputTriangleSvgs(data, triangles, outputFileName)
 	end
 
 	-- DEBUG: Output individual edges:
-	if (false) then
+	if (g_OutputEdges) then
 		f:write("</p><hr/><p>DEBUG: " .. #(data.edges) .. " edges:</p><p>")
 		for _, edge in pairs(data.edges) do
 			local pt1 = svgCoords(edge[1].coords[1], edge[1].coords[2])
@@ -191,7 +200,7 @@ local function outputTriangleSvgs(data, triangles, outputFileName)
 	end
 
 	-- DEBUG: Output individual extEdges:
-	if (false) then
+	if (g_OutputExtEdges) then
 		f:write("</p><hr/><p>DEBUG: " .. #(data.extEdges) .. " extEdges:</p><p>")
 		for _, edge in pairs(data.extEdges) do
 			local pt1 = svgCoords(edge[1].coords[1], edge[1].coords[2])
@@ -228,7 +237,8 @@ end
 local outputFileName = inputFileName:gsub("%.in", "") .. "_out.html"
 if (args[2] == "-q") then
 	-- Quiet mode: don't output anything to console
-	print = function() end
+	local emptyFunction = function() end
+	print = emptyFunction
 	if (args[3]) then
 		outputFileName = args[3]
 	end
