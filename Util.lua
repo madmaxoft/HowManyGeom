@@ -375,16 +375,33 @@ local function breakOnIntersections(edges)
 
 	-- Prune duplicates:
 	sortPoints(intersections)
-	local lastX, lastY = 1e30, 1e30  -- Outside reasonable coords range
+
+	--[[
+	print("All intersections before pruning: (" .. #intersections ..")")
+	for _, pt in ipairs(intersections) do
+		print(string.format("  [%f, %f]", pt[1], pt[2]))
+	end
+	--]]
+
+	local lastX, lastY
 	local tmp = {}
 	for _, pt in ipairs(intersections) do
-		if not(isAlmostEqual(pt[1], lastX) or isAlmostEqual(pt[2], lastY)) then
+		if (
+			not(lastX) or
+			not(isAlmostEqual(pt[1], lastX) and isAlmostEqual(pt[2], lastY))
+		) then
 			ins(tmp, pt)
 			lastX = pt[1]
 			lastY = pt[2]
 		end
 	end
 	intersections = tmp
+	--[[
+	print("All intersections after pruning: (" .. #intersections ..")")
+	for _, pt in ipairs(intersections) do
+		print(string.format("  [%f, %f]", pt[1], pt[2]))
+	end
+	--]]
 
 	-- Break each edge on all the intersections that lie on it:
 	local res = {}
@@ -398,12 +415,12 @@ local function breakOnIntersections(edges)
 			ins(contained, {edge[1], edge[2]})
 			ins(contained, {edge[3], edge[4]})
 			sortPoints(contained)
-			---[[
+			--[[
 			print(string.format("Intersections on edge [%d, %d] - [%d, %d]:",
 				edge[1], edge[2], edge[3], edge[4]
 			))
 			for _, pt in ipairs(contained) do
-				print(string.format("  [%d, %d]", pt[1], pt[2]))
+				print(string.format("  [%f, %f]", pt[1], pt[2]))
 			end
 			--]]
 			lastX = nil
