@@ -426,7 +426,10 @@ local function breakOnIntersections(edges)
 			lastX = nil
 			lastY = nil
 			for _, pt in ipairs(contained) do
-				if (lastX and lastY and ((lastX ~= pt[1]) or (lastY ~= pt[2]))) then
+				if (
+					lastX and lastY and
+					not(isAlmostEqual(lastX, pt[1]) and isAlmostEqual(lastY, pt[2]))  -- Prune intersections too close to each other
+				) then
 					ins(res, {lastX, lastY, pt[1], pt[2]})
 				end
 				lastX = pt[1]
