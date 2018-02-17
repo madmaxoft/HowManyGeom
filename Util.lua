@@ -68,7 +68,7 @@ local function isDirectionSame(dir1, dir2)
 	elseif (dir1[2] ~= 0) then
 		k = dir2[2] /dir1[2]
 	else
-		error("There are two points with the same coords?")
+		error("Bad direction - both coords are zero")
 	end
 	if (k < 0) then
 		-- Opposite direction
@@ -375,10 +375,10 @@ local function breakOnIntersections(edges)
 
 	-- Prune duplicates:
 	sortPoints(intersections)
-	local lastX, lastY
+	local lastX, lastY = 1e30, 1e30  -- Outside reasonable coords range
 	local tmp = {}
 	for _, pt in ipairs(intersections) do
-		if ((pt[1] ~= lastX) or (pt[2] ~= lastY)) then
+		if not(isAlmostEqual(pt[1], lastX) or isAlmostEqual(pt[2], lastY)) then
 			ins(tmp, pt)
 			lastX = pt[1]
 			lastY = pt[2]
@@ -398,7 +398,7 @@ local function breakOnIntersections(edges)
 			ins(contained, {edge[1], edge[2]})
 			ins(contained, {edge[3], edge[4]})
 			sortPoints(contained)
-			--[[
+			---[[
 			print(string.format("Intersections on edge [%d, %d] - [%d, %d]:",
 				edge[1], edge[2], edge[3], edge[4]
 			))
@@ -432,7 +432,7 @@ local function loadFromSimplePoints(fileName, fileContents)
 	local ins = table.insert
 	for line in fileContents:gmatch("[^\n]+") do
 		lineNum = lineNum + 1
-		if (line:sub(1, 1) ~= '#') then
+		if ((line ~= "") and (line:sub(1, 1) ~= '#')) then
 			local x1, y1, x2, y2 = line:match("(%d+),%s*(%d+)%s*%-%s*(%d+),%s*(%d+)")
 			x1 = tonumber(x1)
 			y1 = tonumber(y1)
