@@ -320,14 +320,12 @@ local function filterPointsOnEdge(allIntersections, edge)
 	local res = {}
 	local ins = table.insert
 	for _, pt in pairs(allIntersections) do
-		if not(isEdgeEndpoint(pt, edge)) then
-			if (isSingleLine(
-				{edge[1], edge[2]},
-				{pt[1], pt[2]},
-				{edge[3], edge[4]}
-			)) then
-				ins(res, pt)
-			end
+		if (
+			not(isEdgeEndpoint(pt, edge)) and
+			isSingleLine({edge[1], edge[2]}, {pt[1], pt[2]}, {edge[3], edge[4]}) and
+			isPointInsideEdge(pt[1], pt[2], edge)
+		) then
+			ins(res, pt)
 		end
 	end
 	return res
@@ -379,7 +377,7 @@ local function breakOnIntersections(edges)
 	--[[
 	print("All intersections before pruning: (" .. #intersections ..")")
 	for _, pt in ipairs(intersections) do
-		print(string.format("  [%f, %f]", pt[1], pt[2]))
+		print(string.format("  [%s, %s]", pt[1], pt[2]))
 	end
 	--]]
 
@@ -399,7 +397,7 @@ local function breakOnIntersections(edges)
 	--[[
 	print("All intersections after pruning: (" .. #intersections ..")")
 	for _, pt in ipairs(intersections) do
-		print(string.format("  [%f, %f]", pt[1], pt[2]))
+		print(string.format("  [%s, %s]", pt[1], pt[2]))
 	end
 	--]]
 
@@ -420,7 +418,7 @@ local function breakOnIntersections(edges)
 				edge[1], edge[2], edge[3], edge[4]
 			))
 			for _, pt in ipairs(contained) do
-				print(string.format("  [%f, %f]", pt[1], pt[2]))
+				print(string.format("  [%s, %s]", pt[1], pt[2]))
 			end
 			--]]
 			lastX = nil
