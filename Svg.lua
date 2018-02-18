@@ -173,7 +173,7 @@ function Svg:drawEdge(edge, style)
 	local coords1 = self:dataCoordsToSvgCoords(edge[1].coords)
 	local coords2 = self:dataCoordsToSvgCoords(edge[2].coords)
 	table.insert(self.data, string.format(
-		[[<line x1="%s" y1="%s" x2="%s" y2="%s" style="%s" />]],
+		[[<line x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f" style="%s" />]],
 		coords1[1], coords1[2], coords2[1], coords2[2], style or ""
 	))
 end
@@ -189,7 +189,7 @@ function Svg:drawPoint(point, style)
 
 	local coords = self:dataCoordsToSvgCoords(point.coords)
 	table.insert(self.data, string.format(
-		[[<circle cx="%s" cy="%s" r="%s" style="%s" />]],
+		[[<circle cx="%.2f" cy="%.2f" r="%.2f" style="%s" />]],
 		coords[1], coords[2], 5, style or ""
 	))
 end
@@ -209,7 +209,7 @@ function Svg:drawPolyline(polygon, style)
 	for _, pt in ipairs(polygon) do
 		local coords = self:dataCoordsToSvgCoords(pt.coords)
 		table.insert(self.data, string.format(
-			[[<line x1="%s" y1="%s" x2="%s" y2="%s" style="%s" />]],
+			[[<line x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f" style="%s" />]],
 			lastCoords[1], lastCoords[2], coords[1], coords[2], style or ""
 		))
 		lastCoords = coords
@@ -222,7 +222,7 @@ end
 
 function Svg:footer()
 	-- No configurable entities here
-	return "Get a better browser with SVG support.</svg>"
+	return "Your browser doesn't support SVG images.</svg>"
 end
 
 
