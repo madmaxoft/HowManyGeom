@@ -52,8 +52,21 @@ end
 
 
 --- Returns true if the two numbers are almost equal (up to EPSILON)
-local function isAlmostEqual(n1, n2)
+function isAlmostEqual(n1, n2)
 	return (math.abs(n1 - n2) < 0.000001)
+end
+
+
+
+
+
+function isPerpendicular(coords1, coords2, coords3)
+	local dx1 = coords1[1] - coords2[1]
+	local dy1 = coords1[2] - coords2[2]
+	local dx2 = coords3[1] - coords2[1]
+	local dy2 = coords3[2] - coords2[2]
+
+	return isAlmostEqual(dx1 * dy1, dx2 * dy2)
 end
 
 
