@@ -129,8 +129,6 @@ local function outputSvgs(data, squares, outputFileName)
 	f:write("<p>Found " .. #squares .. " squares:</p><p>")
 	for _, square in ipairs(squares) do
 		f:write(svgHeader)
-		svg:drawPoint(square[1], "stroke:rgb(255,0,0);stroke-width:5")
-		svg:drawPoint(square[2], "stroke:rgb(128,0,0);stroke-width:5")
 		svg:drawPolyline(square, "stroke:rgb(255,0,0);stroke-width:5")
 		f:write(svg:dataOutput())
 		svg:clear()
