@@ -66,7 +66,7 @@ function isPerpendicular(coords1, coords2, coords3)
 	local dx2 = coords3[1] - coords2[1]
 	local dy2 = coords3[2] - coords2[2]
 
-	return isAlmostEqual(dx1 * dy1, dx2 * dy2)
+	return isAlmostEqual(dx1 * dy1, -dx2 * dy2)
 end
 
 
