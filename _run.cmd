@@ -11,4 +11,6 @@ for %%i in (Squares\*.in) do (
 lua HowManySquares.lua %%i -q
 )
 
+lua CreateIndex.lua
+
 echo Done
