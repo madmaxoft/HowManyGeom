@@ -63,7 +63,7 @@ local function indexReg(entry)
 	) then
 		debugPrint(string.format(
 			"Entry doesn't contain required fields, skipping the entry.\n\
-			outFile: %s, timestamp: %s, query: %s, result: %s, svgData: %s)",
+			outFile: %s, timestamp: %s, query: %s, result: %s, meshSvg: %s)",
 			type(entry.outFile), type(entry.timestamp), type(entry.query),
 			type(entry.result), type(entry.meshSvg)
 		))
