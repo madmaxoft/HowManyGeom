@@ -107,9 +107,6 @@ local function outputIndexFile(entries)
 		table.insert(outFiles, of)
 	end
 	table.sort(outFiles)
-	for _, of in ipairs(outFiles) do
-		debugPrint(of)
-	end
 
 	local f = assert(io.open("index.html", "wb"))
 	f:write([[
