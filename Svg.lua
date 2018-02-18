@@ -104,19 +104,28 @@ end
 
 
 
-local function findMaxCoords(data)
+--- Returns the minimum and maximum coords for the calculation data
+local function findMinMaxCoords(data)
 	assert(isData(data))
 	local maxX = -1e30
 	local maxY = -1e30
+	local minX = 1e30
+	local minY = 1e30
 	for _, pt in pairs(data.points) do
+		if (pt.coords[1] < minX) then
+			minX = pt.coords[1]
+		end
 		if (pt.coords[1] > maxX) then
 			maxX = pt.coords[1]
 		end
 		if (pt.coords[2] > maxY) then
 			maxY = pt.coords[2]
 		end
+		if (pt.coords[2] < minY) then
+			minY = pt.coords[2]
+		end
 	end
-	return {maxX, maxY}
+	return {minX, minY, maxX, maxY}
 end
 
 
@@ -137,8 +146,8 @@ function Svg:dataCoordsToSvgCoords(dataCoords)
 	assert(isSvg(self))
 	assert(isCoords(dataCoords))
 
-	local x = 10 + dataCoords[1] * (self.width - 20) / self.maxX
-	local y = 10 + dataCoords[2] * (self.height - 20) / self.maxY
+	local x = 10 + (dataCoords[1] - self.minX) * self.zoom
+	local y = 10 + (dataCoords[2] - self.minY) * self.zoom
 	return {x, y}
 end
 
@@ -247,16 +256,39 @@ local function newSvg(width, height, data)
 	assert(width > 20)
 	assert(height > 20)
 
-	local maxCoords = findMaxCoords(data)
+	-- Calculate the coord transform parameters:
+	local minMaxCoords = findMinMaxCoords(data)
+	local zoomX = (width - 20)  / (minMaxCoords[3] - minMaxCoords[1] + 0.01)
+	local zoomY = (height - 20) / (minMaxCoords[4] - minMaxCoords[2] + 0.01)
+	local zoom
+	if (zoomX < zoomY) then
+		zoom = zoomX
+	else
+		zoom = zoomY
+	end
+
 	local res =
 	{
 		width = width,
 		height = height,
-		maxX = maxCoords[1],
-		maxY = maxCoords[2],
+		minX = minMaxCoords[1],
+		minY = minMaxCoords[2],
+		maxX = minMaxCoords[3],
+		maxY = minMaxCoords[4],
+		zoom = zoom,
 		data = {},
 	}
 	setmetatable(res, Svg)
+	local check1 = res:dataCoordsToSvgCoords({minMaxCoords[1], minMaxCoords[2]})
+	assert(check1[1] >= 10)
+	assert(check1[1] <= width - 10)
+	assert(check1[2] >= 10)
+	assert(check1[2] <= height - 10)
+	local check2 = res:dataCoordsToSvgCoords({minMaxCoords[3], minMaxCoords[4]})
+	assert(check2[1] >= 10)
+	assert(check2[1] <= width - 10)
+	assert(check2[2] >= 10)
+	assert(check2[2] <= height - 10)
 	return res
 end
 
