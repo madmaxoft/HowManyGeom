@@ -3,6 +3,8 @@ HowManyGeom
 
 This is a set of scripts that I wrote out of frustration - I didn't want to count "how many triangles" or "how many squares" in a picture, because I knew I would miss some. And it was a nice challenge to actually do this.
 
+The results (for the included examples) are available for viewing online here: http://xoft.cz/HowMany
+
 Each script is named properly and takes a single input file name as parameter, optional "-q" parameter and optional output file name. Without the -q parameter the script writes the results to the console, in a simplified way, as well as to th eoutput file. The generated output file is a nice HTML that shows the original picture and lists each found shape. When run without any params, shows the invokation reminder and exits with code 0. Upon error in the input file, the error message is output to the console and the script aborts with a nonzero exit code.
 
 ## Input file format
