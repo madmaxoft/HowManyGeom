@@ -17,6 +17,13 @@ local g_SvgHeight = 270
 
 
 
+--- When the SVGs are created, the original shape's full SVG data is stored into this variable for later
+local g_ShapeFullSvg
+
+
+
+
+
 dofile("Util.lua")
 local Svg = dofile("Svg.lua")
 
@@ -116,6 +123,7 @@ local function outputSvgs(data, squares, outputFileName)
 	local svgHeader = svg:header()
 	local svgFooter = svg:footer()
 	svg:clear()
+	g_ShapeFullSvg = svg:header() .. orig .. svg:footer()
 
 	-- Output the HTML:
 	local f = assert(io.open(outputFileName, "wb"))
@@ -247,3 +255,11 @@ end
 
 -- Output nice HTML files:
 outputSvgs(data, squares, outputFileName)
+
+-- Save the results for Index creation / Consistency checking:
+local f = assert(io.open("index.in", "ab"))
+f:write(string.format(
+	[[reg({inFile = %q, outFile = %q, timestamp = %s, query = "squares", result = %d, meshSvg = %q})]],
+	inputFileName, outputFileName, os.time(), numSquares, g_ShapeFullSvg or ""
+))
+f:close()
